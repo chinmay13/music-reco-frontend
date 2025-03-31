@@ -1,28 +1,32 @@
-import React, { useState, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Container, Form, Button, Alert } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { API_BASE_URL } from "../api";
-import { AuthContext } from "../context/AuthContext";
+
 
 const LoginPage = () => {
-  const { setUser } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
     try {
       const res = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: formData.username, password: formData.password }),
       });
       const data = await res.json();
       if (data.message === "Login successful") {
-        // Assume backend sends: { username, isProfileComplete: true/false }
+        localStorage.setItem("username", formData.username);
         const { isProfileComplete } = data;
-        setUser({ username, isProfileComplete });
         if (isProfileComplete) {
           navigate("/recommendations");
         } else {
@@ -38,30 +42,43 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <p>
-        Don't have an account? <Link to="/register">Register here</Link>
-      </p>
-    </div>
+    <Container className="mt-5" style={{ maxWidth: "400px" }}>
+      <h2 className="text-center">Sign In</h2>
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Form onSubmit={handleLogin}>
+        <Form.Group className="mb-3">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Sign In
+        </Button>
+      </Form>
+      <div className="text-center mt-3">
+        <p>
+          Don't have an account?{" "}
+          <Link to="/register" className="text-primary">
+            Register
+          </Link>
+        </p>
+      </div>
+    </Container>
   );
 };
 
