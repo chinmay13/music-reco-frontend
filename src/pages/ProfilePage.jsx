@@ -1,10 +1,8 @@
-
 import React, { useState } from "react";
 import { Container, Button, Row, Col } from "react-bootstrap";
 import NavigationBar from "../components/NavigationBar";
 import { API_BASE_URL } from "../api";
 import { useNavigate } from "react-router-dom";
-
 
 // Example genres array (adjust as needed)
 const genres = [
@@ -19,14 +17,14 @@ const genres = [
   "Reggae",
   "Folk",
   "Metal",
-  "Soul"
+  "Soul",
 ];
 
 const GenreSelector = () => {
   const [selectedGenres, setSelectedGenres] = useState({
     happy: [],
     sad: [],
-    calm: []
+    calm: [],
   });
   const navigate = useNavigate();
 
@@ -62,7 +60,7 @@ const GenreSelector = () => {
         return;
       }
     }
-    
+
     try {
       const username = localStorage.getItem("username");
       const res = await fetch(`${API_BASE_URL}/profile`, {
@@ -74,85 +72,116 @@ const GenreSelector = () => {
         }),
       });
       const data = await res.json();
-      navigate("/recommendations");
+      navigate("/moodSnap");
     } catch (err) {
       console.error(err);
     }
   };
-  
 
   return (
     <>
-      <NavigationBar/>
-        <Container className="my-5 d-flex align-items-center justify-content-center flex-column">
-          <h1 className="mb-5">Build your profile</h1>
+      <NavigationBar />
+      <Container className="my-5 d-flex align-items-center justify-content-center flex-column">
+        <h1 className="mb-5">Build your profile</h1>
 
-          {/* Section for sad mood */}
-          <Container className=" p-4 rounded bg-light d-flex align-items-center justify-content-center flex-column" style={{ maxWidth: "800px" }}>
+        {/* Section for sad mood */}
+        <Container
+          className=" p-4 rounded bg-light d-flex align-items-center justify-content-center flex-column"
+          style={{ maxWidth: "800px" }}
+        >
+          <h3 className="mt-5">
+            What music do you like when you're feeling sad?
+            <span className="text-danger">*</span>
+          </h3>
+          <p className="text-center text-muted fst-italic">
+            Please select atleast 1 and upto 3 genres
+          </p>
 
-            <h3 className="mt-5">
-              What music do you like when you're feeling sad?<span className="text-danger">*</span> 
-            </h3>
-            <p className="text-center text-muted fst-italic">Please select atleast 1 and upto 3 genres</p>
+          <Row
+            className="mt-3 justify-content-center"
+            style={{ marginBottom: "4rem" }}
+          >
+            {genres.map((genre, idx) => (
+              <Col key={`sad-${idx}`} xs="auto" className="my-2">
+                <Button
+                  variant={
+                    selectedGenres.sad.includes(genre)
+                      ? "primary"
+                      : "outline-primary"
+                  }
+                  style={{ borderRadius: "50px" }}
+                  onClick={() => handleGenreChange("sad", genre)}
+                >
+                  {genre}
+                </Button>
+              </Col>
+            ))}
+          </Row>
 
-            <Row className="mt-3 justify-content-center" style={{ marginBottom: "4rem" }}>
-              {genres.map((genre, idx) => (
-                <Col key={`sad-${idx}`} xs="auto" className="my-2">
-                  <Button
-                    variant={selectedGenres.sad.includes(genre) ? "primary" : "outline-primary"}
-                    style={{ borderRadius: "50px" }}
-                    onClick={() => handleGenreChange("sad", genre)}
-                  >
-                    {genre}
-                  </Button>
-                </Col>
-              ))}
-            </Row>
+          {/* Section for happy mood */}
+          <h3 className="text-center">
+            What music do you enjoy when you're feeling happy?{" "}
+            <span className="text-danger">*</span>
+          </h3>
+          <p className="text-center text-muted fst-italic">
+            Please select atleast 1 and upto 3 genres
+          </p>
 
-            {/* Section for happy mood */}
-            <h3 className="text-center">
-              What music do you enjoy when you're feeling happy? <span className="text-danger">*</span> 
-            </h3>        
-            <p className="text-center text-muted fst-italic">Please select atleast 1 and upto 3 genres</p>
+          <Row
+            className="mt-3 justify-content-center"
+            style={{ marginBottom: "4rem" }}
+          >
+            {genres.map((genre, idx) => (
+              <Col key={`happy-${idx}`} xs="auto" className="my-2">
+                <Button
+                  variant={
+                    selectedGenres.happy.includes(genre)
+                      ? "success"
+                      : "outline-success"
+                  }
+                  style={{ borderRadius: "50px" }}
+                  onClick={() => handleGenreChange("happy", genre)}
+                >
+                  {genre}
+                </Button>
+              </Col>
+            ))}
+          </Row>
 
-            <Row className="mt-3 justify-content-center" style={{ marginBottom: "4rem" }}>
-              {genres.map((genre, idx) => (
-                <Col key={`happy-${idx}`} xs="auto" className="my-2">
-                  <Button
-                    variant={selectedGenres.happy.includes(genre) ? "success" : "outline-success"}
-                    style={{ borderRadius: "50px" }}
-                    onClick={() => handleGenreChange("happy", genre)}
-                  >
-                    {genre}
-                  </Button>
-                </Col>
-              ))}
-            </Row>
+          {/* Section for calm mood */}
+          <h3>
+            What music helps you feel calm?{" "}
+            <span className="text-danger">*</span>
+          </h3>
+          <p className="text-center text-muted fst-italic">
+            Please select atleast 1 and upto 3 genres
+          </p>
+          <Row
+            className="mt-3 justify-content-center"
+            style={{ marginBottom: "4rem" }}
+          >
+            {genres.map((genre, idx) => (
+              <Col key={`calm-${idx}`} xs="auto" className="my-2">
+                <Button
+                  variant={
+                    selectedGenres.calm.includes(genre)
+                      ? "info"
+                      : "outline-info"
+                  }
+                  style={{ borderRadius: "50px" }}
+                  onClick={() => handleGenreChange("calm", genre)}
+                >
+                  {genre}
+                </Button>
+              </Col>
+            ))}
+          </Row>
 
-            {/* Section for calm mood */}
-            <h3>
-              What music helps you feel calm? <span className="text-danger">*</span> 
-            </h3>
-            <p className="text-center text-muted fst-italic">Please select atleast 1 and upto 3 genres</p>
-            <Row className="mt-3 justify-content-center" style={{ marginBottom: "4rem" }}>
-              {genres.map((genre, idx) => (
-                <Col key={`calm-${idx}`} xs="auto" className="my-2">
-                  <Button
-                    variant={selectedGenres.calm.includes(genre) ? "info" : "outline-info"}
-                    style={{ borderRadius: "50px" }}
-                    onClick={() => handleGenreChange("calm", genre)}
-                  >
-                    {genre}
-                  </Button>
-                </Col>
-              ))}
-            </Row>
-
-            <Button variant="primary mt-3 w-50" onClick={handleSubmit}>
-              Update Profile
-            </Button>
-          </Container>
+          <Button variant="primary mt-3 w-50" onClick={handleSubmit}>
+            Update Profile
+          </Button>
         </Container>
+      </Container>
     </>
   );
 };

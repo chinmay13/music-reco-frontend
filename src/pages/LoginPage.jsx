@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { API_BASE_URL } from "../api";
 
-
 const LoginPage = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
@@ -21,14 +20,17 @@ const LoginPage = () => {
       const res = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: formData.username, password: formData.password }),
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
       });
       const data = await res.json();
       if (data.message === "Login successful") {
         localStorage.setItem("username", formData.username);
         const { isProfileComplete } = data;
         if (isProfileComplete) {
-          navigate("/recommendations");
+          navigate("/moodSnap");
         } else {
           navigate("/profile");
         }

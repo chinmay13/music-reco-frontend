@@ -1,0 +1,49 @@
+/* Make sure to import this in your MoodSnapPage.jsx or a global stylesheet */
+.polaroid-frame {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+  width: 350px; /* Increased width for a bigger Polaroid */
+  height: 450px; /* Increased height for a bigger Polaroid */
+  padding: 10px 10px 60px; /* Bottom padding for the buttons */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.image-container {
+  background-color: #f0f0f0;
+  width: 100%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+/* Captured image fills the sub-frame */
+.captured-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Live webcam styling */
+.live-webcam {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Polaroid bottom buttons row */
+.polaroid-buttons {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 10px;
+}

@@ -5,6 +5,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 import RecommendationsPage from "./pages/RecommendationsPage";
 import { AuthProvider } from "./context/AuthContext";
+import MoodSnapPage from "./pages/MoodSnapPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/moodSnap" element={<MoodSnapPage />} />
           <Route path="/recommendations" element={<RecommendationsPage />} />
         </Routes>
       </BrowserRouter>
