@@ -80,7 +80,7 @@ const GenreSelector = () => {
 
   return (
     <>
-      <NavigationBar />
+      {/* <NavigationBar /> */}
       <Container className="my-5 d-flex align-items-center justify-content-center flex-column">
         <h1 className="mb-5">Build your profile</h1>
 
